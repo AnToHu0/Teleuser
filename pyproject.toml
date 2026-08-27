@@ -1,0 +1,66 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "teleuser"
+version = "1.0.0"
+description = "A bounded, read-only Telegram research CLI for agents"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Anton Lapin" }]
+requires-python = ">=3.12"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: MacOS",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: Microsoft :: Windows",
+  "Programming Language :: Python :: 3.12",
+]
+# The read-only boundary and passive startup override these versioned internals.
+dependencies = [
+  "keyring>=25.7,<26; sys_platform == 'win32'",
+  "telethon==1.44.0",
+]
+
+[project.scripts]
+teleuser = "teleuser.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "pytest-asyncio>=1,<2", "ruff>=0.12,<1"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]
+
+[tool.ruff.lint.per-file-ignores]
+# Intentional short, local file operations in a one-command process and its tests.
+"src/teleuser/storage.py" = ["ASYNC240"]
+"tests/*" = ["ASYNC240"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/teleuser"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/skills",
+  "/src",
+  "/tests",
+  "/AGENTS.md",
+  "/CLAUDE.md",
+  "/README.md",
+  "/CONCEPT.md",
+  "/SECURITY.md",
+  "/LICENSE",
+  "/pyproject.toml",
+  "/uv.lock",
+]
