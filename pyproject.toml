@@ -22,7 +22,7 @@ classifiers = [
 # The read-only boundary and passive startup override these versioned internals.
 dependencies = [
   "keyring>=25.7,<26; sys_platform == 'win32'",
-  "telethon==1.44.0",
+  "telethon==1.45.0",
 ]
 
 [project.scripts]
